@@ -54,16 +54,16 @@ import { showImagePreview, showToast } from 'vant';
 import { storeToRefs } from 'pinia';
 import { ref, onMounted, onUpdated } from 'vue';
 
-const props = defineProps({
-  item: Object
-});
+import { Dynamic } from '@/interfaces/contact';
+
+const props = defineProps<{ item: Dynamic }>();
 const emit = defineEmits(['on-like', 'on-dislike', 'on-comment']);
 const { uid } = storeToRefs(onlineUserStore());
 const likeIcon = ref(false);
 
 // 点赞图标切换
 const likeIconToggle = () => {
-  let dynamic: Object = props.item;
+  let dynamic: any = props.item;
   // console.log(props.item);
   // console.log(dynamic.likeId, uid.value);
   if (dynamic.likeId.indexOf(uid.value) !== -1) {
@@ -77,12 +77,12 @@ const photoPreview = (imgUrl: string) =>  {
 }
 
 // 评论功能
-const handleComment = (item: Object) => {
+const handleComment = (item: any) => {
   emit('on-comment', item);
 }
 
 // 点赞或取消点赞
-const handleLikeOrDislike = (item: Object) => {
+const handleLikeOrDislike = (item: any) => {
   if (likeIcon.value === true) emit('on-dislike', item._id);
   else emit('on-like', item._id);
 }
@@ -178,4 +178,4 @@ onUpdated(likeIconToggle);
     }
   }
 }
-</style>
+</style>@/class/contact

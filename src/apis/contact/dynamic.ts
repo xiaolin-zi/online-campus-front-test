@@ -1,7 +1,7 @@
 import { contactRequest } from '@/utils/request';
 
 // 发布动态
-export const insertDynamicApi = function(entity) {
+export const insertDynamicApi = function(entity: any) {
   return contactRequest({
     method: 'post',
     url: '/dynamic/insertDynamic',
@@ -10,7 +10,7 @@ export const insertDynamicApi = function(entity) {
 }
 
 // 查询动态
-export const searchDynamicApi = function() {
+export const searchDynamicApi = function(): any {
   return contactRequest({
     method: 'get',
     url: '/dynamic/searchDynamic',
@@ -25,7 +25,7 @@ export const deleteDynamicApi = function() {
 }
 
 // 点赞动态
-export const insertLikeApi = function(dynamicId, username) {
+export const insertLikeApi = function(dynamicId: string, username: string): any {
   return contactRequest({
     url: '/dynamic/insertLike',
     method: 'get',
@@ -37,7 +37,7 @@ export const insertLikeApi = function(dynamicId, username) {
 }
 
 // 取消点赞动态
-export const deleteLikeApi = function(dynamicId: string, username: string) {
+export const deleteLikeApi = function(dynamicId: string, username: string): any {
   return contactRequest({
     url: '/dynamic/deleteLike',
     method: 'get',
@@ -49,7 +49,7 @@ export const deleteLikeApi = function(dynamicId: string, username: string) {
 }
 
 // 发布评论
-export const sendCommentApi = function(form) {
+export const sendCommentApi = function(form: any): any {
   return contactRequest({
     url: '/dynamic/addComment',
     method: 'post',
@@ -58,7 +58,7 @@ export const sendCommentApi = function(form) {
 }
 
 // 删除评论
-export const deleteCommentApi = function(form) {
+export const deleteCommentApi = function(form: any) {
   return contactRequest({
     url: '/dynamic/deleteComment',
     method: 'post',

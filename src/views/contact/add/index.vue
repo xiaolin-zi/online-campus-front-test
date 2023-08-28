@@ -89,7 +89,7 @@ export default {
     dynamic.promulgatorName = username.value;
 
     
-    const beforeRead = (file: File) => {
+    const beforeRead = (file: File|any) => {
       if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
         showToast('仅支持上传jpg/png格式的图片');
         return false;
@@ -157,9 +157,10 @@ export default {
 
       // 在提交时将图片上传到服务器上去
       for (let i in fileArr) {
-        let file = toRaw(fileArr[i]).file;
+        let curFile: any = toRaw(fileArr[i]);
+        let imgSource = curFile.file;
         let formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', imgSource);
 
         const { data: uploadRes } = await uploadImgApi(formData);
         // console.log(uploadRes);
@@ -175,7 +176,7 @@ export default {
       // console.log(insertRes);
       if (insertRes && insertRes.code === 0) {
         showToast('动态发布成功!');
-        this.$router.push('/dashboard');
+        this.$router.push('/campus/contact');
       } else showToast('内部错误, 请稍后重试!');
     },
     async getLocation() {

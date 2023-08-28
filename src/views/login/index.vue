@@ -119,9 +119,9 @@
 <script>
 import {reactive, ref} from 'vue';
 import cookie from "js-cookie";
-import loginApi from "@/api/user/login";
-import {ElMessage} from 'element-plus'
-import router from "@/router";
+import loginApi from "@/apis/user/login";
+import { ElMessage } from 'element-plus'
+import router from "@/routers";
 
 export default {
 
@@ -340,16 +340,16 @@ export default {
 }
 
 
-.el-form /deep/ .el-form-item__content {
+.el-form :deep(.el-form-item__content) {
   margin: 0 !important;
   padding: 0 20px;
 }
 
-.el-form /deep/ .el-form-item__content .el-form-item__error {
+.el-form :deep(.el-form-item__content .el-form-item__error) {
   margin-left: 20px !important;
 }
 
-.el-input /deep/ input {
+.el-input :deep(input) {
   border-radius: 10px;
 }
 
@@ -358,31 +358,31 @@ export default {
   margin-top: 20px;
 }
 
-.el-tabs /deep/ .is-active,
-.el-tabs /deep/ div:hover {
+.el-tabs :deep(.is-active),
+.el-tabs :deep(div:hover) {
   color: #595bb3;
 }
 
-.el-tabs /deep/ .is-active {
+.el-tabs :deep(.is-active) {
   background-color: #fff;
 }
 
-.el-tabs /deep/ .el-tabs__item {
+.el-tabs :deep(.el-tabs__item) {
   border: none !important;
   font-size: 18px;
   height: 50px;
   line-height: 50px;
 }
 
-.el-tabs /deep/ .el-tabs__nav {
+.el-tabs :deep(.el-tabs__nav) {
   border: none;
 }
 
-.el-tabs /deep/ .el-tabs__nav-scroll {
+.el-tabs :deep(.el-tabs__nav-scroll) {
   background-color: #f5f5f6;
 }
 
-.el-input /deep/ .el-input__inner {
+.el-input :deep(.el-input__inner) {
   height: 48px;
   font-size: 15px;
 }

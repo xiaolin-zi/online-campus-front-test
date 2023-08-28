@@ -11,6 +11,9 @@
     "paths": {
       "@/*": ["./src/*"],
     },
+
+    "suppressImplicitAnyIndexErrors": true,
+    "ignoreDeprecations":"5.0",
     
     /* Bundler mode */
     "moduleResolution": "node",
@@ -22,8 +25,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.js", "src/**/*.vue"],

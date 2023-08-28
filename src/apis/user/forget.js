@@ -1,11 +1,11 @@
-import request from '@/utils/request'
+import request from '@/utils/service';
 
 export default {
 
     //根据账号获取用户信息
     getUserInfoByAccount(account) {
         return request({
-            url: '/campusUser/user/getUserByAccount/'+account,
+            url: `/campusUser/user/getUserByAccount/${account}`,
             method: 'get'
         })
     },
@@ -39,7 +39,7 @@ export default {
     //获取邮箱验证码
     getEmailCode(email) {
         return request({
-            url: '/campusUser/sendEmail/'+email,
+            url: `/campusUser/sendEmail/${email}`,
             method: 'get'
         })
     }

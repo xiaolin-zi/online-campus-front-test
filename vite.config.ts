@@ -25,6 +25,12 @@ export default defineConfig({
     open: true, // 项目启动时自动打开浏览器
     // 远程服务器代理
     proxy: {
+      // 网关
+      '/gateway-api': {
+        target: 'http://localhost:9000/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/gateway-api/, '')
+      },
       // 用户模块
       '/user-api': {
         target: 'http://localhost:7001/campusUser/',

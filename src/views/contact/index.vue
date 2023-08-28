@@ -2,7 +2,6 @@
   <div class="contact-dashboard-box">
     <van-nav-bar class="header-box">
       <template #left>
-        <van-icon name="arrow-left" size="25" color="#fff" @click="toIndex"/>
         <p class="title">Online Contact</p>
       </template>
       <template #right>
@@ -34,9 +33,12 @@
       <div class="sheet-box">
         <div class="sheet-main">
           <commentItem 
-            v-for="item in commentList.values" 
+            v-for="item in commentList.values"
             v-bind:key="item.uuid" 
-            :item="item"/>
+            :item="item"
+            :dynamic="targetDynamic.value"
+            @on-delete="handleCommentDelete"
+            @on-reply-finish="handleReplyFinish"/>
         </div>
         <van-field class="comment-field-box" v-model="commentContent" rows="1" autosize type="textarea" placeholder="说点什么吧...">
           <template #button>
@@ -48,42 +50,46 @@
   </div>
 </template>
 
-<script setup >
+<script setup lang="ts">
 import dynamicItem from '@/components/dynamic-item/index.vue';
 import commentItem from '@/components/comment-item/index.vue';
-import { searchDynamicApi, insertLikeApi, deleteLikeApi, sendCommentApi } from '@/apis/contact/dynamic';
+import { searchDynamicApi, insertLikeApi, deleteLikeApi, sendCommentApi, deleteCommentApi } from '@/apis/contact/dynamic';
 import { storeToRefs } from 'pinia';
 import avatar2 from '@/assets/img/avatar2.jpg';
 import { showConfirmDialog, showToast } from 'vant';
-import { reactive, ref, onMounted, toRaw, nextTick, onUpdated } from 'vue';
+import { reactive, ref, onMounted, toRaw, nextTick, onUpdated, } from 'vue';
 import { useRouter } from 'vue-router';
 import { onlineUserStore } from '@/stores/onlineUser';
+import { Dynamic } from '@/interfaces/contact';
 
 // 获取当前username和uid
 const { uid, username } = storeToRefs(onlineUserStore());
 
-const contactList = reactive([]);
-const commentList = reactive([]);
+const contactList = reactive<any>([]); // 动态列表
+const commentList = reactive<any>([]); // 评论列表
 
-const isLoading = ref(true);
-const isNetworkError = ref(false);
+const isLoading = ref(true); // 是否正在加载
+const isNetworkError = ref(false); // 是否为网络错误
 
-const showSheet = ref(false);
-const sheetTitle = ref('评论区');
-const commentContent = ref('');
+const showSheet = ref(false); // 是否展示评论区
+const sheetTitle = ref('评论区'); // 评论区标题
+const commentContent = ref('');  // 评论输入框
 
-const targetContact = reactive({});
+const targetDynamic = reactive<any>({}); // 目标动态
 
 const router = useRouter();
 
+
 onMounted(() => {
+  // console.log('on Mounted.');
   getAllContacts();
 });
 
-onUpdated(() => {
-  getAllContacts();
-});
+// onUpdated(() => {
+//   console.log('on Updated.');
+// });
 
+// 获取所有动态
 const getAllContacts = async () => {
   const { data: listRes } = await searchDynamicApi();
   // console.log(listRes);
@@ -96,24 +102,23 @@ const getAllContacts = async () => {
 }
 
 // 展示评论区
-const showSheetFn = (item) => {
+const showSheetFn = (item: Dynamic) => {
   let itemRaw = toRaw(item);
-  targetContact.value = itemRaw; // 先把要评论的动态贴文给获取到
-  console.log(itemRaw.comments);
+  targetDynamic.value = itemRaw; // 先把要评论的动态贴文给获取到
+  // console.log(itemRaw);
   sheetTitle.value = `评论区(${itemRaw.comments.length})`;
   commentList.values = itemRaw.comments;
   nextTick(() => { showSheet.value = true; });
 }
 
-// 获取最新的评论列表
-// const getCommentList = () => {
-//   getAllContacts();
-// }
-
 // 发送评论
 const sendComment = () => {
-  // console.log(toRaw(targetContact.value));
-  const { _id } = toRaw(targetContact.value);
+  if (commentContent.value.trim().length === 0) {
+    showToast('输入内容不能为空!');
+    return;
+  }
+  // console.log(toRaw(targetDynamic.value));
+  const { _id } = toRaw(targetDynamic.value);
   showConfirmDialog({ title: '提示', message: '确认发送评论?' }).then(async () => {
     let addCommentForm = {
       dynamicId: _id,
@@ -121,20 +126,26 @@ const sendComment = () => {
       senderName: username.value,
       content: commentContent.value
     };
-    // console.log(addCommentForm);
+    // console.log('直接评论', addCommentForm);
     const { data: sendRes } = await sendCommentApi(addCommentForm);
-    // console.log(sendRes);
+    // console.log('sendRes', sendRes);
     if (sendRes && sendRes.code === 0) {
       showToast('发送评论成功~');
+      getAllContacts();
+      showSheet.value = false;
     } else {
       showToast('OOPS! 内部小错误,请稍后重试!');
     }
     commentContent.value = '';
   }).catch(() => { showToast('已取消操作~'); });
 }
+const handleReplyFinish = async () => {
+  showSheet.value = false;
+  getAllContacts();
+}
 
 // 点赞或取消点赞
-const insertLike = async (dynamicId) => {
+const insertLike = async (dynamicId: string) => {
   // console.log('handle like: ', dynamicId, username.value);
   const { data: res } = await insertLikeApi(dynamicId, username.value);
   if (res && res.code === 0) {
@@ -144,7 +155,7 @@ const insertLike = async (dynamicId) => {
     showToast('OOPS! 内部小错误,请稍后重试!');
   }
 }
-const cancelLike = async (dynamicId) => {
+const cancelLike = async (dynamicId: string) => {
   // console.log('handle like: ', dynamicId, username.value);
   const { data: res } = await deleteLikeApi(dynamicId, username.value);
   if (res && res.code === 0) {
@@ -154,8 +165,22 @@ const cancelLike = async (dynamicId) => {
     showToast('OOPS! 内部小错误,请稍后重试!');
   }
 }
+// 删除某一条评论
+const handleCommentDelete = (deleteCommentForm: any) => {
+  // console.log('handleCommentDelete', deleteCommentForm);
+  showConfirmDialog({ title: '提示', message: '确认删除评论?' }).then(async () => {
+    const { data: res } = await deleteCommentApi(deleteCommentForm);
+    if (res && res.code === 0) {
+      showToast('删除成功~');
+      getAllContacts();
+      showSheet.value = false;
+    } else {
+      showToast('OOPS! 内部小错误,请稍后重试!');
+    }
+  }).catch(() => { showToast('已取消操作~'); });
+}
 
-// 跳转到搜索
+// 跳转到动态搜索
 const toSearch = () => {
   router.push('/campus/contact/search');
 }
@@ -163,10 +188,6 @@ const toSearch = () => {
 // 跳转到写动态
 const toAdd = () => {
   router.push('/campus/contact/add');
-}
-
-const toIndex = () => {
-  showToast('返回主页!');
 }
 
 </script>
@@ -193,14 +214,12 @@ const toIndex = () => {
     z-index: 100;
     top: 0;
     position: fixed;
-    line-height: 50px;
     height: 50px;
     background: #2a3631;
 
     .title {
       font-family: 'klavika-bold';
       line-height: 50px;
-      margin-left: 16px;
       text-align: center;
       color: #fff;
       font-size: 26px;
@@ -248,4 +267,4 @@ const toIndex = () => {
     }
   }
 }
-</style>
+</style>@/class/contact

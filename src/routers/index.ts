@@ -76,4 +76,8 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach((from, to, next) => {
+  next();
+});
+
 export default router;
