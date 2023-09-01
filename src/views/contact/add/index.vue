@@ -233,4 +233,4 @@ export default {
     font-family: '黑体';
   }
 }
-</style>
+</style>@/stores/useGlobalStore

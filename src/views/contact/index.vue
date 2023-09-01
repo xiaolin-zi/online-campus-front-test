@@ -267,4 +267,4 @@ const toAdd = () => {
     }
   }
 }
-</style>@/class/contact
+</style>@/class/contact@/stores/useGlobalStore

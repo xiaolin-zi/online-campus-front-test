@@ -115,10 +115,10 @@
 
 <script>
 import {reactive, ref} from 'vue';
-import loginApi from "@/api/user/login";
-import {ElMessage} from "element-plus";
-import RegistApi from "@/api/user/regist";
-import router from "@/router";
+import { sendPhoneCodeApi } from "@/apis/user/login";
+import { ElMessage } from "element-plus";
+import { registerApi } from "@/apis/user/register";
+import router from "@/routers";
 
 export default {
 
@@ -154,7 +154,7 @@ export default {
       registForm.value.validate(
           (valid) => {
             if (valid) {
-              RegistApi.submitRegist(regist).then((res) => {
+              registerApi(regist).then((res) => {
                 if (res.data.code == 0) {
                   ElMessage({
                     message: '注册成功，请登录',
@@ -213,7 +213,7 @@ export default {
           return;
         } else {
           isCountDownShow.value = true;
-          loginApi.sendPhoneCode(regist.telephone).then((res) => {
+          sendPhoneCodeApi(regist.telephone).then((res) => {
             startCountDown();
             if (res.data.code == 0) {
               ElMessage({

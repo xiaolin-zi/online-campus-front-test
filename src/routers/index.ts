@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,8 +25,18 @@ const router = createRouter({
         },
         {
           path: '/campus/message',
-          name: '线上校园-消息',
+          name: '线上校园-消息(列表)',
           component: () => import('@/views/message/index.vue'),
+        },
+        {
+          path: '/campus/message/:id',
+          name: '线上校园-消息-聊天',
+          component: () => import('@/views/message/chat/index.vue'),
+        },
+        {
+          path: '/campus/message/sys',
+          name: '线上校园-消息-系统通知',
+          component: () => import('@/views/message/sys/index.vue'),
         },
         {
           path: '/campus/user',
@@ -61,8 +72,9 @@ const router = createRouter({
     },
     { 
       path: '/verifyPhone', 
-      name:'线上校园-手机验证', 
-      component: () => import('@/views/forget/verifyPhone.vue') },
+      name:'线上校园-手机验证',
+      component: () => import('@/views/forget/verifyPhone.vue') 
+    },
     { 
       path: '/verifyEmail', 
       name:'线上校园-邮箱验证', 
@@ -76,7 +88,8 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((from, to, next) => {
+router.beforeEach((to, from, next) => {
+  const globalStore = useGlobalStore();
   next();
 });
 

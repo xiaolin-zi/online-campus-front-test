@@ -6,16 +6,17 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
-    // 路径别名生效配置
+    "types": ["node"],
+
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["./src/*"],
+      "paths": {
+        "@": ["src"],
+        "@/*": ["src/*"],
     },
 
-    "suppressImplicitAnyIndexErrors": true,
-    "ignoreDeprecations":"5.0",
+    // "suppressImplicitAnyIndexErrors": true,
+    // "ignoreDeprecations":"5.0",
     
-    /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -30,5 +31,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.js", "src/**/*.vue"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

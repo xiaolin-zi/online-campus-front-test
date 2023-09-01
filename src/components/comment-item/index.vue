@@ -238,4 +238,4 @@ const deleteComment = (dynamicId: any, commentId: string) => {
     height: 310px;
   }
 }
-</style>@/class/contact
+</style>@/class/contact@/stores/useGlobalStore

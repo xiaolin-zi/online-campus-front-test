@@ -3,21 +3,21 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+import 'font-awesome/css/font-awesome.min.css';
+import stores from '@/stores/index';
+import routers from '@/routers';
+import App from '@/App.vue';
 
 // 导入全局css
 import '@/assets/css/normalize.css';
 import '@/assets/css/iconfont.css';
 
-import { createPinia } from 'pinia';
-
-import App from '@/App.vue';
-import router from '@/routers';
-
 const app = createApp(App);
 
-app.use(createPinia());
-app.use(router);
-app.use(Vant);
-app.use(ElementPlus);
+app.use(stores).use(routers).use(Vant).use(ElementPlus);
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 app.mount('#app');

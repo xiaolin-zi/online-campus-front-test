@@ -178,4 +178,4 @@ onUpdated(likeIconToggle);
     }
   }
 }
-</style>@/class/contact
+</style>@/class/contact@/stores/useGlobalStore

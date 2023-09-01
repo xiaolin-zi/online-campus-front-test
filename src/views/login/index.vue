@@ -7,26 +7,21 @@
         <div style="color: silver;font-size: 20px;margin: 0 5px">|</div>
         <div style="font-size: 20px">登录</div>
       </div>
-      <div
-          class="mainBox"
-      >
+      <div class="mainBox">
         <el-tabs
             v-model="activeName"
             type="card"
             @tab-click="handleClick"
-            stretch
-        >
+            stretch>
           <el-tab-pane label="密码登录" name="first">
             <div class="loginInput">
               <el-form ref="loginForm" :model="login" label-width="80px">
                 <el-form-item
-                    prop="loginName"
-                    :rules="[{ required: true, message: '请输入手机号/邮箱/账号', trigger: 'blur' }]"
-                >
-                  <el-input
-                      v-model="login.loginName"
-                      placeholder="请输入手机号/邮箱/账号"
-                  ></el-input>
+                  prop="loginName"
+                  :rules="[{ required: true, message: '请输入手机号/邮箱/账号', trigger: 'blur' }]">
+                <el-input
+                  v-model="login.loginName"
+                  placeholder="请输入手机号/邮箱/账号"></el-input>
                 </el-form-item>
                 <el-form-item
                     prop="password"
@@ -51,8 +46,7 @@
 
               <!--忘记密码，注册-->
               <div class="forget" style="width: 310px;margin:0 auto;text-align: right">
-                <router-link to="/getAccount"
-                             style="margin-right: 10px;font-size:14px;text-decoration: none;color: rgb(127, 108, 108)">
+                <router-link to="/getAccount" style="margin-right: 10px;font-size:14px;text-decoration: none;color: rgb(127, 108, 108)">
                   忘记密码
                 </router-link>
                 <router-link to="/register" style="text-decoration: none;font-size:14px;color: rgb(127, 108, 108)">
@@ -82,30 +76,22 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item class="codeContainer"
-                              prop="code"
-                              :rules="[{ required: true, message: '请输入验证码', trigger: 'blur' }]"
-                >
+                  prop="code"
+                  :rules="[{ required: true, message: '请输入验证码', trigger: 'blur' }]">
                   <el-input
-                      v-model="loginByPhone.code"
-                      placeholder="请输入验证码"
-                  ></el-input>
+                    v-model="loginByPhone.code"
+                    placeholder="请输入验证码"></el-input>
                   <div class="codeButtonContainer">
                     <el-button
-                        size="mini"
-                        class="getcode"
-                        v-if="!isCountDownShow"
-                        @click="getCode"
-                    >获取验证码
-                    </el-button
-                    >
+                      size="mini"
+                      class="getcode"
+                      v-if="!isCountDownShow"
+                      @click="getCode">获取验证码</el-button>
                     <div class="countDown" v-else>{{ countDownSecond }} s</div>
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="tologinByPhone"
-                  >登录
-                  </el-button
-                  >
+                  <el-button type="primary" @click="tologinByPhone">登录</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -117,9 +103,9 @@
 </template>
 
 <script>
-import {reactive, ref} from 'vue';
+import { reactive, ref } from 'vue';
 import cookie from "js-cookie";
-import loginApi from "@/apis/user/login";
+import { loginApi, loginByPhoneApi, sendPhoneCodeApi } from "@/apis/user/login";
 import { ElMessage } from 'element-plus'
 import router from "@/routers";
 
@@ -161,7 +147,7 @@ export default {
       loginForm.value.validate(
           (valid) => {
             if (valid) {
-              loginApi.submitLogin(login).then((res) => {
+              loginApi(login).then((res) => {
                 if (res.data.code == 0) {
                   console.log("登录成功");
                   console.log(res.data.data);
@@ -202,7 +188,7 @@ export default {
           return;
         } else {
           isCountDownShow.value = true;
-          loginApi.sendPhoneCode(loginByPhone.telephone).then((res) => {
+          sendPhoneCodeApi(loginByPhone.telephone).then((res) => {
             startCountDown();
             if (res.data.code == 0) {
               ElMessage({
@@ -241,7 +227,7 @@ export default {
       loginByPhoneForm.value.validate(
           (valid) => {
             if (valid) {
-              loginApi.loginByPhone(loginByPhone).then((res) => {
+              loginByPhoneApi(loginByPhone).then((res) => {
                 console.log(res)
                 if (res.data.code == 0) {
                   //登录成功
