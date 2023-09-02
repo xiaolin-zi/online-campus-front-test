@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useGlobalStore } from '@/stores/useGlobalStore';
+import { showToast } from 'vant';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -90,6 +91,21 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const globalStore = useGlobalStore();
+  let token = globalStore.token;
+
+  // console.log('router beforeEach', from.path, to.path);
+
+  if (to.path === '/login' || to.path === '/register') {
+    next();
+  } else {
+    if (token != null || token !== '' || token !== undefined) {
+      next();
+    } else {
+      showToast('请登录.');
+      globalStore.$reset(); // 清空pinia所有状态数据
+      router.push('/login');
+    }
+  }
   next();
 });
 

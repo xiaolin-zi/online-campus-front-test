@@ -4,9 +4,9 @@ import { defineStore } from 'pinia';
 export const useGlobalStore = defineStore('globalState', {
   state: () => {
     return {
-      token: 't2',
-      uid: 't2',
-      username: 't2',
+      token: '',
+      uid: '',
+      username: '',
       userImg: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
     }
   },
@@ -22,7 +22,24 @@ export const useGlobalStore = defineStore('globalState', {
       this.username = username;
     },
   },
-  // persist: {
-  //   enabled: true
-  // }
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: 'token',
+        storage: window.localStorage,
+        paths: ['token']
+      },
+      {
+        key: 'uid',
+        storage: window.localStorage,
+        paths: ['uid']
+      },
+      {
+        key: 'username',
+        storage: window.localStorage,
+        paths: ['username']
+      }
+    ]
+  }
 });

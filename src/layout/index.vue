@@ -4,7 +4,7 @@
     <div class="layout-main">
       <router-view/>
     </div>
-    <van-tabbar v-model="active" class="tabber" active-color="#F1C40F" route>
+    <van-tabbar v-model:model-value="active" class="tabber" active-color="#F1C40F" route>
       <van-tabbar-item class="tab" to="/campus/dashboard">
         <template #icon>
           <van-icon name="home-o" size="30"/>

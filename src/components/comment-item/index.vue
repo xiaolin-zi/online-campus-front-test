@@ -65,8 +65,8 @@ import { Comment, Dynamic } from '@/interfaces/contact';
 import { showConfirmDialog, showToast } from 'vant';
 import { sendCommentApi } from '@/apis/contact/dynamic';
 import { storeToRefs } from 'pinia';
-import { onlineUserStore } from '@/stores/onlineUser';
-const { uid, username } = storeToRefs(onlineUserStore()); // 获取当前username和uid
+import { useGlobalStore } from '@/stores/useGlobalStore';
+const { uid, username } = storeToRefs(useGlobalStore()); // 获取当前username和uid
 
 const props = defineProps<{ 
   item: Comment, 

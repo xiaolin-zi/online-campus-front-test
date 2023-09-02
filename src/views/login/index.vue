@@ -34,7 +34,10 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="tologin">登录</el-button>
+                  <el-button type="primary" @click="tologin">
+                    <p v-if="!loginLoading">登录</p>
+                    <van-loading type="spinner" v-else/>
+                  </el-button>
                 </el-form-item>
 
               </el-form>
@@ -91,7 +94,10 @@
                   </div>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="tologinByPhone">登录</el-button>
+                  <el-button type="primary" @click="tologinByPhone">
+                    <p>登录</p>
+                    <van-loading type="spinner" />
+                  </el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -104,16 +110,20 @@
 
 <script>
 import { reactive, ref } from 'vue';
-import cookie from "js-cookie";
 import { loginApi, loginByPhoneApi, sendPhoneCodeApi } from "@/apis/user/login";
 import { ElMessage } from 'element-plus'
 import router from "@/routers";
+import { useGlobalStore } from '@/stores/useGlobalStore';
+
+const globalStore = useGlobalStore();
 
 export default {
 
   setup() {
     const loginForm = ref(null);
     const loginByPhoneForm = ref(null);
+
+    const loginLoading = ref(false);
 
 
     const login = reactive(
@@ -138,7 +148,6 @@ export default {
       return callback();
     };
 
-
     // 倒计时名称
     let timer;
 
@@ -147,30 +156,39 @@ export default {
       loginForm.value.validate(
           (valid) => {
             if (valid) {
+              loginLoading.value = true;
               loginApi(login).then((res) => {
                 if (res.data.code == 0) {
                   console.log("登录成功");
                   console.log(res.data.data);
-                  cookie.set("campus_token", res.data.data.token);
-                  cookie.set("campus_uid", JSON.stringify(res.data.data.uid));
+
                   ElMessage({
                     message: '登录成功',
                     type: 'success',
-                  })
-                  router.push({path: "/home"});
+                  });
+
+                  // 设置 token 和 uid 以及 username
+                  globalStore.setToken(res.data.data.token);
+                  globalStore.setUid(res.data.data.uid);
+                  globalStore.setUsername(res.data.data.uid);
+
+                  router.push('/campus');
                 } else {
                   console.log("登录失败");
                   console.log(res.data.msg);
                   ElMessage({
                     message: '手机号或验证码错误',
                     type: 'error',
-                  })
+                  });
                 }
-              }).catch(() => {
+                loginLoading.value = false;
+              }).catch((err) => {
+                console.log(err);
                 ElMessage({
                   message: '服务器网络出现问题，请稍后重试',
                   type: 'error',
-                })
+                });
+                loginLoading.value = false;
               })
             }
           }
@@ -201,7 +219,8 @@ export default {
                 type: 'error',
               })
             }
-          }).catch(() => {
+          }).catch((err) => {
+            console.log(err);
             ElMessage({
               message: '服务器网络出现问题，请稍后重试',
               type: 'error',
@@ -233,13 +252,12 @@ export default {
                   //登录成功
                   console.log("登录成功");
                   console.log(res.data.data);
-                  cookie.set("campus_token", res.data.data.token);
-                  cookie.set("campus_uid", JSON.stringify(res.data.data.uid));
+
                   ElMessage({
                     message: '登录成功',
                     type: 'success',
                   })
-                  router.push({path: "/home"});
+                  router.push('/campus');
                 } else {
                   ElMessage({
                     message: '手机号或验证码错误',

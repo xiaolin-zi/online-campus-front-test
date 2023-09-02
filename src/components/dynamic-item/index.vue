@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import avatar2 from '@/assets/img/avatar2.jpg';
-import { onlineUserStore } from '@/stores/onlineUser';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 
 import { showImagePreview, showToast } from 'vant';
 import { storeToRefs } from 'pinia';
@@ -58,7 +58,7 @@ import { Dynamic } from '@/interfaces/contact';
 
 const props = defineProps<{ item: Dynamic }>();
 const emit = defineEmits(['on-like', 'on-dislike', 'on-comment']);
-const { uid } = storeToRefs(onlineUserStore());
+const { uid } = storeToRefs(useGlobalStore());
 const likeIcon = ref(false);
 
 // 点赞图标切换

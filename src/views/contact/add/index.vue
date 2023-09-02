@@ -57,7 +57,7 @@ import { showConfirmDialog, showToast } from 'vant';
 import { getIpInfo } from '@/utils/location';
 import { uploadImgApi } from '@/apis/contact/oss';
 import { insertDynamicApi } from '@/apis/contact/dynamic';
-import { onlineUserStore } from '@/stores/onlineUser';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 
 export default {
   name: 'add',
@@ -84,7 +84,7 @@ export default {
     const locationMsg = ref('所在位置');
     const statusMsg = ref('动态阅读权限');
 
-    const { uid, username } = storeToRefs(onlineUserStore());
+    const { uid, username } = storeToRefs(useGlobalStore ());
     dynamic.promulgatorId = uid.value;
     dynamic.promulgatorName = username.value;
 

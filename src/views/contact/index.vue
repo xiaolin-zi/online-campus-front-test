@@ -57,13 +57,13 @@ import { searchDynamicApi, insertLikeApi, deleteLikeApi, sendCommentApi, deleteC
 import { storeToRefs } from 'pinia';
 import avatar2 from '@/assets/img/avatar2.jpg';
 import { showConfirmDialog, showToast } from 'vant';
-import { reactive, ref, onMounted, toRaw, nextTick, onUpdated, } from 'vue';
+import { reactive, ref, onMounted, toRaw, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-import { onlineUserStore } from '@/stores/onlineUser';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 import { Dynamic } from '@/interfaces/contact';
 
 // 获取当前username和uid
-const { uid, username } = storeToRefs(onlineUserStore());
+const { uid, username } = storeToRefs(useGlobalStore());
 
 const contactList = reactive<any>([]); // 动态列表
 const commentList = reactive<any>([]); // 评论列表

@@ -78,7 +78,7 @@ import appData from '@/utils/emojis.json';
 import { storeToRefs } from 'pinia';
 import { useRoute ,useRouter } from 'vue-router';
 import { getUserChatRecords, clickMyMessageApi } from '@/apis/message/index';
-import { onlineUserStore } from '@/stores/onlineUser';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 import { webSocketInit } from '@/utils/websocket';
 
 const route = useRoute();
@@ -86,7 +86,7 @@ const router = useRouter();
 
 const id: any = route.params.id
 
-const { uid, username, userImg } = storeToRefs(onlineUserStore());
+const { uid, username, userImg } = storeToRefs(useGlobalStore());
 
 const user = ref<User>({})
 const chatList = ref<ChatList[]>([])

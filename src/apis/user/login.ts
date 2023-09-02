@@ -1,4 +1,4 @@
-import { gatewayRequest } from '@/utils/gateway';
+import { gatewayRequest } from '@/utils/request';
 
 //密码登录
 export const loginApi = (userInfo: any) => {

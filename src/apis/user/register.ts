@@ -1,4 +1,4 @@
-import { gatewayRequest } from '@/utils/gateway';
+import { gatewayRequest } from '@/utils/request';
 
 //根据账号获取用户信息
 export const registerApi = (userInfo: any) => {
