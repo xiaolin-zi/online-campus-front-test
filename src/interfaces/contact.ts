@@ -1,6 +1,6 @@
 export interface Dynamic {
-  _id: string,
-  uuid: string,
+  _id?: string,
+  uuid?: string,
   promulgatorId: string,
   promulgatorName: string,
   promulgatorImage: string,
@@ -9,14 +9,14 @@ export interface Dynamic {
   city: string,
   address: string,
   label: Array<string>,
-  likeId: Array<string>,
-  likeName: Array<string>,
-  targets: Array<string>,
+  likeId?: Array<string>,
+  likeName?: Array<string>,
+  targets?: Array<string>,
   status: number,
   comments: Array<Comment>,
   deleted: boolean,
-  createTime: string,
-  updateTime: string
+  createTime?: string,
+  updateTime?: string
 }
 
 export interface Comment {

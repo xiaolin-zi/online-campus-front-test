@@ -1,6 +1,6 @@
 // const ws_uri = 'ws://192.168.43.144:7002/campusMessage/websocket/1';
 
-export function webSocketInit(uri: any, agentData: any, successCb: any) {
+export function webSocketInit(uri: string, agentData: any, successCb: any) {
   if (typeof WebSocket === 'undefined') {
     console.log('你的浏览器暂不支持websocket... >_<');
     return;

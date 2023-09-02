@@ -58,13 +58,14 @@ import { getIpInfo } from '@/utils/location';
 import { uploadImgApi } from '@/apis/contact/oss';
 import { insertDynamicApi } from '@/apis/contact/dynamic';
 import { useGlobalStore } from '@/stores/useGlobalStore';
+import { Dynamic } from '@/interfaces/contact';
 
 export default {
   name: 'add',
   setup() {
     const isDisabled = ref(true);
     const fileList = ref([]);
-    const dynamic = reactive({
+    const dynamic = reactive<Dynamic>({
       promulgatorId: '', // 发布者账号
       promulgatorName: '', // 发布者昵称
       promulgatorImage: '', // 发布者头像
@@ -73,7 +74,9 @@ export default {
       city: '', // 城市
       address: '', // 地理位置信息
       label: [], // 标签列表
-      status: 0 // 状态(0-公开/1-部分好友可见/2-私有)
+      status: 0, // 状态(0-公开/1-部分好友可见/2-私有)
+      deleted: false,
+      comments: []
     });
     const showContact = ref(false);
     const actions = [ 
@@ -203,15 +206,18 @@ export default {
     width: 100%;
     line-height: 50px;
     height: 50px;
-    background: #2a3631;
+    background: #0a1629;
 
     .title {
       font-family: '黑体';
       line-height: 50px;
       color: #fff;
-      font-size: 30px;
+      font-size: 25px;
     }
     .release-btn {
+      border: 2px solid #fff;
+      background: #0a1629;
+      color: #fff;
       font-size: 20px;
       font-family: '黑体';
     }

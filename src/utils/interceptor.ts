@@ -7,7 +7,7 @@ import { showToast } from 'vant';
 export const reqSuccessCallback = (config: any) => {
   const globalStore = useGlobalStore();
   let token = globalStore.token, uid = globalStore.uid;
-  console.log('request interceptor', uid, token);
+  // console.log('request interceptor', uid, token);
 
   if (token != null || token !== undefined || token !== '') {
     config.headers.token = token;

@@ -11,6 +11,7 @@ const router = createRouter({
     },
     {
       path: '/campus',
+      redirect: 'campus/dashboard',
       name: '线上校园',
       component: () => import('@/layout/index.vue'),
       children: [

@@ -2,7 +2,7 @@
   <div class="contact-dashboard-box">
     <van-nav-bar class="header-box">
       <template #left>
-        <p class="title">Online Contact</p>
+        <p class="title">{{ contactIndexTitle }}</p>
       </template>
       <template #right>
         <van-icon name="search" size="25" color="#fff" @click="toSearch"/>
@@ -65,6 +65,8 @@ import { Dynamic } from '@/interfaces/contact';
 // 获取当前username和uid
 const { uid, username } = storeToRefs(useGlobalStore());
 
+const contactIndexTitle = ref('#');
+
 const contactList = reactive<any>([]); // 动态列表
 const commentList = reactive<any>([]); // 评论列表
 
@@ -83,6 +85,7 @@ const router = useRouter();
 onMounted(() => {
   // console.log('on Mounted.');
   getAllContacts();
+  contactIndexTitle.value = `${username.value} Contact Space`;
 });
 
 // onUpdated(() => {
@@ -92,7 +95,7 @@ onMounted(() => {
 // 获取所有动态
 const getAllContacts = async () => {
   const { data: listRes } = await searchDynamicApi();
-  // console.log(listRes);
+  console.log('listRes', listRes);
   if (listRes && listRes.code === 0) {
     contactList.values = listRes.data;
   } else {
@@ -205,7 +208,7 @@ const toAdd = () => {
 .contact-dashboard-box {
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   position: relative;
   background: #fff;
 
@@ -215,14 +218,14 @@ const toAdd = () => {
     top: 0;
     position: fixed;
     height: 50px;
-    background: #2a3631;
+    background: #0a1629;
 
     .title {
       font-family: 'klavika-bold';
       line-height: 50px;
       text-align: center;
       color: #fff;
-      font-size: 26px;
+      font-size: 25px;
     }
     .avatar {
       cursor: pointer;
@@ -233,10 +236,12 @@ const toAdd = () => {
   }
 
   .main-box {
+    box-sizing: border-box;
+    border: 2px solid #f00;
     overflow: auto;
     width: 100%;
     height: 100%;
-    margin-top: 60px;
+    margin-top: 50px;
 
     .loading-box {
       color: #2a3631;
@@ -250,7 +255,7 @@ const toAdd = () => {
     width: 100%;
     height: 640px;
     margin-bottom: 60px;
-    overflow: hidden;
+    overflow: auto;
 
     .sheet-main {
       width: 100%;
@@ -267,4 +272,4 @@ const toAdd = () => {
     }
   }
 }
-</style>@/class/contact@/stores/useGlobalStore
+</style>
