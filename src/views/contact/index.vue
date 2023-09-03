@@ -5,9 +5,9 @@
         <p class="title">{{ contactIndexTitle }}</p>
       </template>
       <template #right>
-        <van-icon name="search" size="25" color="#fff" @click="toSearch"/>
+        <van-icon name="search" size="25" color="#0a1629" @click="toSearch"/>
         &nbsp;&nbsp;&nbsp;
-        <van-icon name="bell" size="25" color="#fff" :dot="true"/>
+        <van-icon name="bell" size="25" color="#0a1629" :dot="true"/>
         <van-image round class="avatar"
           fit="cover"
           :src="avatar2"
@@ -42,7 +42,7 @@
         </div>
         <van-field class="comment-field-box" v-model="commentContent" rows="1" autosize type="textarea" placeholder="说点什么吧...">
           <template #button>
-            <van-button size="small" type="primary" @click="sendComment">发送</van-button>
+            <van-button size="small" color="#73c975" @click="sendComment">发送</van-button>
           </template>
         </van-field>
       </div>
@@ -218,17 +218,18 @@ const toAdd = () => {
     top: 0;
     position: fixed;
     height: 50px;
-    background: #0a1629;
+    background: #f6f6f6;
 
     .title {
       font-family: 'klavika-bold';
       line-height: 50px;
       text-align: center;
-      color: #fff;
+      color: #0a1629;
       font-size: 25px;
     }
     .avatar {
       cursor: pointer;
+      // border: 1px solid #0a1629;
       margin-left: 18px;
       width: 30px;
       height: 30px;
@@ -237,21 +238,23 @@ const toAdd = () => {
 
   .main-box {
     box-sizing: border-box;
-    border: 2px solid #f00;
     overflow: auto;
     width: 100%;
     height: 100%;
     margin-top: 50px;
 
     .loading-box {
-      color: #2a3631;
+      color: #0a1629;
       text-align: center;
+    }
+
+    .van-floating-bubble {
+      --van-floating-bubble-color: #f00;
     }
   }
 
   .sheet-box {
     position: relative;
-    box-sizing: border-box;
     width: 100%;
     height: 640px;
     margin-bottom: 60px;

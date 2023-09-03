@@ -35,7 +35,7 @@
         <ul>
           <li @click="handleComment(item)"><van-icon name="chat-o" />&nbsp;{{ item.comments.length }}</li>
           <li @click="handleLikeOrDislike(item)">
-            <van-icon name="good-job" v-if="likeIcon === true"/>
+            <van-icon name="good-job" v-if="likeIcon === true" color="#73c975"/>
             <van-icon name="good-job-o" v-else/>
             {{ item.likeId.length }}
           </li>
@@ -162,6 +162,7 @@ onUpdated(likeIconToggle);
         list-style: none;
         li {
           width: 90px;
+          color: #0a1629;
           margin-right: 5px;
           line-height: 36px;
           text-align: center;

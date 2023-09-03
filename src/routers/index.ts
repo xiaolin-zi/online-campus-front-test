@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useGlobalStore } from '@/stores/useGlobalStore';
 import { showToast } from 'vant';
+import { closeWebSocket, openWebSocket } from '@/utils/websocket';
+import { throttleFn } from '@/utils/throttle';
+import { debounceFn } from '@/utils/debounce';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,11 +34,6 @@ const router = createRouter({
           component: () => import('@/views/message/index.vue'),
         },
         {
-          path: '/campus/message/:id',
-          name: '线上校园-消息-聊天',
-          component: () => import('@/views/message/chat/index.vue'),
-        },
-        {
           path: '/campus/message/sys',
           name: '线上校园-消息-系统通知',
           component: () => import('@/views/message/sys/index.vue'),
@@ -46,6 +44,11 @@ const router = createRouter({
           component: () => import('@/views/user/index.vue'),
         }
       ]
+    },
+    {
+      path: '/campus/message/:id',
+      name: '线上校园-消息-聊天',
+      component: () => import('@/views/message/chat/index.vue'),
     },
     {
       path: '/campus/contact/add',
@@ -100,14 +103,22 @@ router.beforeEach((to, from, next) => {
     next();
   } else {
     if (token != null || token !== '' || token !== undefined) {
+      console.log('尝试关闭原有ws');
+      closeWebSocket();
+
+      console.log(`成功切换页面: '${from.path}' ---> '${to.path}'`);
+
+      console.log('尝试创建新ws');
+      openWebSocket(`ws://117.72.15.203:9000/campusMessage/websocket/${globalStore.uid}`);
       next();
     } else {
+      closeWebSocket();
       showToast('请登录.');
       globalStore.$reset(); // 清空pinia所有状态数据
       router.push('/login');
     }
   }
-  next();
+  // next();
 });
 
 export default router;

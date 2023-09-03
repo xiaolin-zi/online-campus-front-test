@@ -4,7 +4,7 @@
     <div class="layout-main">
       <router-view/>
     </div>
-    <van-tabbar v-model="active" class="tabber" active-color="#F1C40F" route>
+    <van-tabbar v-model="active" class="tabber" active-color="#73c975" route>
       <van-tabbar-item class="tab" to="/campus/dashboard">
         <template #icon>
           <van-icon name="home-o" size="30"/>
@@ -49,7 +49,12 @@ onMounted(() => { active.value = 0; });
   overflow: hidden;
 
   .tabber {
+    background: #f6f6f6;
     height: 55px;
+    .tab {
+      background: #f6f6f6;
+      color: #0a1629;
+    }
   }
 }
 </style>

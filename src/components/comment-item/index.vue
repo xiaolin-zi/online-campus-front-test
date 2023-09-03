@@ -28,8 +28,8 @@
         </div>
         <div class="operate-box">
           <ul>
-            <li @click="deleteComment(dynamic._id, item.uuid)" v-show="showDeleteBtn"><p style="color: #f00;">删除</p></li>
-            <li @click="showReplySheet(item.senderName)"><p style="color: #007497;">回复</p></li>
+            <li @click="deleteComment(dynamic._id, item.uuid)" v-show="showDeleteBtn">删除</li>
+            <li @click="showReplySheet(item.senderName)">回复</li>
           </ul>
         </div>
       </div>
@@ -149,6 +149,7 @@ const deleteComment = (dynamicId: any, commentId: string) => {
 <style scoped lang="less">
 .comment-item-box {
   width: 100%;
+  color: #0a1629;
   box-sizing: border-box;
   // height: 200px;
   overflow: auto;
@@ -203,10 +204,9 @@ const deleteComment = (dynamicId: any, commentId: string) => {
             line-height: 28px;
             float: left;
             border-radius: 0.4em;
-            color: rgb(0, 98, 184);
             padding-left: 5px;
             width: 75%;
-            background: #d8efff;
+            background: #f6f6f6;
           }
         }
       }
@@ -222,6 +222,7 @@ const deleteComment = (dynamicId: any, commentId: string) => {
           float: right;
           li {
             width: 50px;
+            color: #0a1629;
             text-align: center;
             cursor: pointer;
             display: inline-block;

@@ -1,5 +1,5 @@
 export interface Dynamic {
-  _id?: string,
+  _id?: string | any,
   uuid?: string,
   promulgatorId: string,
   promulgatorName: string,
@@ -9,7 +9,7 @@ export interface Dynamic {
   city: string,
   address: string,
   label: Array<string>,
-  likeId?: Array<string>,
+  likeId?: Array<string> | any,
   likeName?: Array<string>,
   targets?: Array<string>,
   status: number,

@@ -55,7 +55,7 @@
       <el-input v-model="textarea" :rows="5" type="textarea" id="textarea" />
       <div class="input-box-footer">
         <p>按 Enter 键发送</p>
-        <el-button type="primary" :disabled="disabled" @click="send" @keyup.enter="send">发送</el-button>
+        <van-button size="small" color="#73c975" :disabled="disabled" @click="send" @keyup.enter="send">发送</van-button>
       </div>
     </div>
   </div>
@@ -79,7 +79,7 @@ import { storeToRefs } from 'pinia';
 import { useRoute ,useRouter } from 'vue-router';
 import { getUserChatRecords, clickMyMessageApi } from '@/apis/message/index';
 import { useGlobalStore } from '@/stores/useGlobalStore';
-import { webSocketInit } from '@/utils/websocket';
+import { wsSendMsg } from '@/utils/websocket';
 
 const route = useRoute();
 const router = useRouter();
@@ -98,10 +98,10 @@ const disabled = computed(() => (textarea.value.length === 0 ? true : false));
 
 const messageBox = ref<any>(null);
 
-// onMounted(async () => {
-//   const { data: res } = await clickMyMessageApi();
-//   console.log(res);
-// })
+onMounted(async () => {
+  const { data: res } = await clickMyMessageApi();
+  console.log(res);
+})
 
 onMounted(() => {
   for (let i in appData) {
@@ -187,18 +187,10 @@ const send = async () => {
     isPhoto: false
   }
 
-  let url = 'campusMessage/websocket';
-  
-  // connectWebsocket(
-  //   url,
-  //   uid,
-  //   agentData,
-  //   successCallback,
-  //   errCallback
-  // )
+  wsSendMsg(agentData, successCallback);
 
   // webSocketInit(`ws://10.120.50.161:7002/${url}/${uid}`, agentData);
-  webSocketInit(`ws://localhost:7002/${url}/${uid.value}`, agentData, successCallback);
+  // webSocketInit(`ws://117.72.15.203:9000/${url}/${uid.value}`, agentData, successCallback);
 
   textarea.value = '' // 聊天框清空
   
@@ -224,23 +216,26 @@ const errCallback = (data: any) => {
 
 <style lang="less" scoped>
 .messages {
- 
+  // border: 1px solid #0f0;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 100%;
   .message-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
 
-.arrow-icon {
-  cursor: pointer;
-  margin-right: 10px;
-}
-.head-center {
-  text-align: center;
-  flex-grow: 1;
-}
+  .arrow-icon {
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  .head-center {
+    text-align: center;
+    flex-grow: 1;
+  }
   .message-box-wrapper {
     height: 60vh;
     overflow-y: scroll;
@@ -294,12 +289,12 @@ const errCallback = (data: any) => {
         }
 
         .text-message-send {
-          background-color: #056de8;
+          background-color: #73c975;
           position: relative;
-          color: #fff;
+          color: #0a1629;
 
           &::after {
-            background: #056de8;
+            background: #73c975;
             content: "";
             height: 8px;
             position: absolute;
@@ -315,12 +310,12 @@ const errCallback = (data: any) => {
         }
 
         .text-message-receiver {
-          background-color: #f6f6f6;
-          color: #444;
+          background-color: #73c975;
+          color: #0a1629;
           position: relative;
 
           &::after {
-            background: #f6f6f6;
+            background: #73c975;
             content: "";
             height: 8px;
             left: -4px;

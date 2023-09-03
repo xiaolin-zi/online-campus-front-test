@@ -95,8 +95,8 @@
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary" @click="tologinByPhone">
-                    <p>登录</p>
-                    <van-loading type="spinner" />
+                    <p v-if="!loginLoading">登录</p>
+                    <van-loading type="spinner" v-else/>
                   </el-button>
                 </el-form-item>
               </el-form>
