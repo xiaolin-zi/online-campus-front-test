@@ -29,27 +29,27 @@ import { reqSuccessCallback, respSuccessCallback, errCallback } from '@/utils/in
 //   }
 // });
 const gatewayRequest = axios.create({
-  baseURL: 'https://117.72.15.203:9000/',
+  baseURL: 'https://117.72.15.203/',
   timeout: 90000,
 });
 
 const userRequest = axios.create({
-  baseURL: 'https://117.72.15.203:9000/CampusUser/',
+  baseURL: 'https://117.72.15.203/CampusUser/',
   timeout: 90000,
 });
 
 const messageRequest = axios.create({
-  baseURL: 'https://117.72.15.203:9000/campusMessage/',
+  baseURL: 'https://117.72.15.203/campusMessage/',
   timeout: 90000,
 });
 
 const contactRequest = axios.create({
-  baseURL: 'https://117.72.15.203:9000/campusContact/',
+  baseURL: 'https://117.72.15.203/campusContact/',
   timeout: 90000,
 });
 
 const ossRequest = axios.create({
-  baseURL: 'https://117.72.15.203:9000/campusOss/',
+  baseURL: 'https://117.72.15.203/campusOss/',
   timeout: 90000,
   headers: {
     'Content-Type': 'multipart/form-data'
