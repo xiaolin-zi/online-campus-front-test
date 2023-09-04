@@ -1,0 +1,32 @@
+{
+  "routes": [
+    {
+      "src": "/gateway-api",
+      "dest": "http://117.72.15.203:9000/"
+    },
+    {
+      "src": "/user-api",
+      "dest": "http://117.72.15.203:9000/campusUser/"
+    },
+    {
+      "src": "/message-api",
+      "dest": "http://117.72.15.203:9000/campusMessage/"
+    },
+    {
+      "src": "/trade-api",
+      "dest": "http://117.72.15.203:9000/campusTrade/"
+    },
+    {
+      "src": "/oss-api",
+      "dest": "http://117.72.15.203:9000/campusOss/"
+    },
+    {
+      "src": "/parttime-api",
+      "dest": "http://117.72.15.203:9000/campusParttime/"
+    },
+    {
+      "src": "/recruit-api",
+      "dest": "http://117.72.15.203:9000/campusRecruit/"
+    }
+  ]
+}
