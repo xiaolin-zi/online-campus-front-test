@@ -1,107 +1,78 @@
 <template>
-  <div class="aside">
-    <div class="head">
-      <div class="head-wrap">
-        <div class="head-left">
-          <p class="title">消息</p>
-          <el-button size="small" round @click="clear">
-            <i class="iconfont icon-clear"></i>
-            清除未读</el-button>
-        </div>
-        <div class="head-right">
-          <i class="iconfont icon-v-add" @click="goToAddFriend"></i>
-        </div>
-      </div>
-    </div>
-    <div class="search">
-      <el-input v-model="keywords" :prefix-icon="Search" placeholder="搜索聊天记录"></el-input>
-    </div>
+  <div class="message-dashboard-box">
+    <van-nav-bar class="header-box">
+      <template #left>
+        <van-button size="mini" color="#73c975" @click="clearNotRead"><p style="color: #0a1629;">清除未读</p></van-button>
+      </template>
+      <template #title>
+        <p class="title">消息</p>
+      </template>
+      <template #right>
+        <van-icon name="plus" size="18" color="#0a1629" @click="toAddFriend"/>
+      </template>
+    </van-nav-bar>
 
-    <ul class="chat-list-group">
-      <li class="chat-list-group-item">
-        <div class="chat-list-group-item-title" @click="() => {
-          friendsShow = !friendsShow;
-        }
-          ">
-          <span>好友消息</span>
-          <el-icon size="12" color="#d3d3d3" v-if="!friendsShow">
-            <ArrowRight />
-          </el-icon>
-          <el-icon size="12" color="#d3d3d3" v-else>
-            <ArrowDown />
-          </el-icon>
-        </div>
-
-        <ul class="chat-user-list-group" v-if="friendsShow">
-          <li class="chat-user-list-group-item" v-for="(item, index) in userList" :key="index" :class="route.params.id === item.userId
-            ? 'chat-user-list-group-item--active'
-            : ''
-            " @click="toPage(item.userId)">
-            <el-image :src="item.userImage" style="width: 40px; height: 40px; border-radius: 5px" />
-            <div class="chat-user-list-group-item-content">
-              <div class="content-name">
-                <p>{{ item.username }}</p>
-                <p class="time">{{ item.recentTime }}</p>
-              </div>
-              <p class="content">{{ item.recentContent }}</p>
+    <div class="message-dashboard-main">
+      <van-collapse v-model="activeName">
+        <van-collapse-item title="系统消息" name="system">
+          <div class="sys-box" @click="toSys">
+            <div class="icon-box">
+              <van-icon name="volume" size="28" color="#f6f6f6" style="margin: 10px auto;"/>
             </div>
-          </li>
-        </ul>
-      </li>
-      <li class="chat-list-group-item" @click="toChat">
-        <div class="chat-list-group-item-title">
-          <span>系统消息</span>
-        </div>
-      </li>
-    </ul>
+            <div class="right-title">
+              <p>系统通知</p>
+            </div>
+          </div>
+        </van-collapse-item>
+        <van-collapse-item title="好友消息" name="friend">
+          <friendItem 
+            v-for="(item, index) in userList" 
+            :item="item" 
+            :key="index" 
+            @on-to-page="toPage"/>
+        </van-collapse-item>
+      </van-collapse>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-interface List {
-  recentContent: string
-  userImage: string
-  userId: string
-  recentTime: string
-  username: string
-}
-
-import { Search } from '@element-plus/icons-vue';
-import { ref } from "vue";
+import { List } from '@/interfaces/message';
+import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { clickMyMessageApi } from '@/apis/message/index';
+import friendItem from '@/components/friend-item/index.vue';
 
 const router = useRouter();
-const route = useRoute();
-
 const keywords = ref<string>("");
 const friendsShow = ref<Boolean>(false);
-
-
 const userList = ref<List[]>([]);
+const activeName = ref(['system', 'friend']);
 
-const getData = async () => {
+onMounted(() => {
+  clickMyMessage();
+});
+
+const clickMyMessage = async () => {
   const { data: res } = await clickMyMessageApi();
-  console.log(res);
+  console.log('clickMyMessage', res);
   userList.value = res.data;
 }
 
-getData()
-
 // 清除未读
-const clear = () => {
+const clearNotRead = () => {
   console.log('清除未读');
 };
 
-const toChat = () => {
+const toSys = () => {
   router.push('/campus/message/sys');
 }
 
 const toPage = (id: string) => {
   router.push('/campus/message/' + id);
 };
-const goToAddFriend = () => {
-    // 跳转到添加好友界面的逻辑
+
+const toAddFriend = () => {
     router.push('/campus/message/add-friend');
   };
 </script>
@@ -109,98 +80,106 @@ const goToAddFriend = () => {
 
 <style lang="less" scoped>
 /* 样式重置 */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
+.message-dashboard-box {
+  width: 100%;
+  font-family: '黑体';
+  background: #fff;
+  overflow-y: auto;
 
-.aside {
-width: 100%;
-background: #fff;
-overflow-y: auto;
+  .header-box {
+    width: 100%;
+    color: #0a1629;
+    z-index: 100;
+    overflow: hidden;
+    top: 0;
+    position: fixed;
+    height: 50px;
+    background: #f6f6f6;
+    .title {
+      line-height: 50px;
+      text-align: center;
+      font-size: 22px;
+    }
+  }
 
-.head {
-  padding: 20px;
-  border-bottom: 1px solid #ebeef5;
+  .message-dashboard-main {
+    background: #fff;
+    box-sizing: border-box;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
 
-  .head-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .head-left {
+    .sys-box {
+      width: 100%;
       display: flex;
-      align-items: center;
-
-      .title {
-        margin-right: 10px;
-        font-size: 18px;
-        font-weight: bold;
+      // border: 1px solid #f00;
+      overflow: hidden;
+      .icon-box {
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        border-radius: 50%;
+        background: #1989FA;
+      }
+      .right-title {
+        color: #0a1629;
+        margin-left: 10px;
+        height: 48px;
+        font-size: 22px;
+        line-height: 40px;
       }
     }
 
-    .head-right {
-      font-size: 20px;
-    }
-
-    .iconfont {
-      cursor: pointer;
-    }
-  }
-}
-
-.search {
-  padding: 10px;
-  border-bottom: 1px solid #ebeef5;
-}
-
-.chat-list-group {
-  list-style: none;
-  padding: 10px;
-
-  .chat-list-group-item {
-    margin-bottom: 10px;
-
-    .chat-list-group-item-title {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .chat-user-list-group {
+    .chat-list-group {
       list-style: none;
-
-      .chat-user-list-group-item {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-
-        &--active {
-          background-color: #f0f5ff;
-        }
-
-        .content-name {
+      padding: 10px;
+    
+      .chat-list-group-item {
+        margin-bottom: 10px;
+      
+        .chat-list-group-item-title {
           display: flex;
           align-items: center;
-
-          .time {
-            margin-left: 10px;
-            color: #999;
-          }
+          cursor: pointer;
         }
-
-        .content {
-          margin-top: 5px;
-          font-size: 14px;
-          color: #666;
+      
+        .chat-user-list-group {
+          list-style: none;
+        
+          .chat-user-list-group-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+          
+            &--active {
+              background-color: #f0f5ff;
+            }
+          
+            .content-name {
+              display: flex;
+              align-items: center;
+            
+              .time {
+                margin-left: 10px;
+                color: #999;
+              }
+            }
+          
+            .content {
+              margin-top: 5px;
+              font-size: 14px;
+              color: #666;
+            }
+          }
         }
       }
     }
   }
-}
+
+
 
 /* 响应式布局 */
 @media (max-width: 768px) {

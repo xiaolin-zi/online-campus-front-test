@@ -108,11 +108,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { reactive, ref } from 'vue';
 import { loginApi, loginByPhoneApi, sendPhoneCodeApi } from "@/apis/user/login";
 import { ElMessage } from 'element-plus'
 import router from "@/routers";
+import { initMessageApi } from '@/apis/message/index';
 import { useGlobalStore } from '@/stores/useGlobalStore';
 
 const globalStore = useGlobalStore();
@@ -122,25 +123,17 @@ export default {
   setup() {
     const loginForm = ref(null);
     const loginByPhoneForm = ref(null);
-
     const loginLoading = ref(false);
-
-
-    const login = reactive(
-        {
-          loginName: "",
-          password: "",
-        });
-
+    const login = reactive({
+      loginName: "",
+      password: "",
+    });
     const loginByPhone = reactive({telephone: "", code: ""});
-
     const activeName = ref("first");
-
     const countDownSecond = ref(60);
-
     const isCountDownShow = ref(false);
 
-    const checkPhone = (rule, value, callback) => {
+    const checkPhone = (rule: any, value: any, callback: any) => {
       //debugger
       if (!/^1[34578]\d{9}$/.test(value)) {
         return callback(new Error("手机号码格式不正确"));
@@ -149,12 +142,17 @@ export default {
     };
 
     // 倒计时名称
-    let timer;
+    let timer: any;
+
+    const initMessage = async () => {
+      const { data: res } = await initMessageApi();
+      console.log('Login Success!, Now initMessage: ', res);
+    }
 
     //登录
     const tologin = async () => {
       loginForm.value.validate(
-          (valid) => {
+          (valid: any) => {
             if (valid) {
               loginLoading.value = true;
               loginApi(login).then((res) => {
@@ -171,6 +169,8 @@ export default {
                   globalStore.setToken(res.data.data.token);
                   globalStore.setUid(res.data.data.uid);
                   globalStore.setUsername(res.data.data.uid);
+
+                  initMessage();
 
                   router.push('/campus');
                 } else {
@@ -192,16 +192,16 @@ export default {
               })
             }
           }
-      )
+      );
     };
 
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
       console.log(e.name);
     };
 
     const getCode = async () => {
       //先判断手机号是否正确
-      loginByPhoneForm.value.validateField("telephone", (valid) => {
+      loginByPhoneForm.value.validateField("telephone", (valid: any) => {
         if (!valid) {
           return;
         } else {
@@ -244,19 +244,24 @@ export default {
 
     const tologinByPhone = async () => {
       loginByPhoneForm.value.validate(
-          (valid) => {
+          (valid: any) => {
             if (valid) {
               loginByPhoneApi(loginByPhone).then((res) => {
                 console.log(res)
                 if (res.data.code == 0) {
-                  //登录成功
+          +        //登录成功
                   console.log("登录成功");
                   console.log(res.data.data);
 
                   ElMessage({
                     message: '登录成功',
                     type: 'success',
-                  })
+                  });
+
+                  // 设置 token 和 uid 以及 username
+                  // globalStore.setToken(res.data.data.token);
+                  // globalStore.setUid(res.data.data.uid);
+                  // globalStore.setUsername(res.data.data.uid);
                   router.push('/campus');
                 } else {
                   ElMessage({
@@ -279,6 +284,7 @@ export default {
       loginForm,
       loginByPhoneForm,
       login,
+      loginLoading,
       loginByPhone,
       isCountDownShow,
       countDownSecond,

@@ -61,18 +61,7 @@
   </div>
 </template>
 <script setup lang="ts">
-interface User {
-  username?: string
-  userImage?: string
-  userId?: string
-}
-
-interface ChatList {
-  content: string
-  receiver: string
-  createTime: string
-}
-
+import { User, ChatList } from '@/interfaces/message';
 import { ref, onMounted, computed, onUnmounted, onUpdated, reactive } from 'vue';
 import appData from '@/utils/emojis.json';
 import { storeToRefs } from 'pinia';
@@ -80,6 +69,7 @@ import { useRoute ,useRouter } from 'vue-router';
 import { getUserChatRecords, clickMyMessageApi } from '@/apis/message/index';
 import { useGlobalStore } from '@/stores/useGlobalStore';
 import { wsSendMsg } from '@/utils/websocket';
+import { showToast } from 'vant';
 
 const route = useRoute();
 const router = useRouter();
@@ -100,10 +90,11 @@ const messageBox = ref<any>(null);
 
 onMounted(async () => {
   const { data: res } = await clickMyMessageApi();
-  console.log(res);
+  console.log('clickMyMessageApi', res);
 })
 
 onMounted(() => {
+  getData();
   for (let i in appData) {
     faceList.value.push(appData[i].char);
   }
@@ -111,11 +102,11 @@ onMounted(() => {
 
 onMounted(() => {
   scrollToBottom();
-})
+});
 
 onUpdated(() => {
   scrollToBottom();
-})
+});
 
 const scrollToBottom = () => {
   messageBox.value.scrollTop = messageBox.value.scrollHeight;
@@ -123,12 +114,15 @@ const scrollToBottom = () => {
 
 const getData = async () => {
   const { data: res } = await getUserChatRecords(id);
-  console.log(res);
-  chatList.value = res.data.dialog.reverse();
-  user.value = res.data.user;
+  console.log('getData', res);
+  if (res.code === 0) {
+    chatList.value = res.data.dialog.reverse();
+    user.value = res.data.user;
+  } else {
+    showToast(res.data);
+  }
 }
 
-getData();
 const goBack= () => {     
   router.go(-1); // 使用Vue Router的go方法返回上一个页面
 };

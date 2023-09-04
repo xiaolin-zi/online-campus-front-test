@@ -45,8 +45,8 @@ onMounted(() => { active.value = 0; });
 <style lang="less" scoped>
 .layout-box {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  // height: 100%;
+  // overflow: hidden;
 
   .tabber {
     background: #f6f6f6;

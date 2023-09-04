@@ -17,7 +17,8 @@ interface SendBody {
 // }
 
 // 消息初始化
-export const initMessage = () => {
+export const initMessageApi = () => {
+  console.log('initMessage');
   return messageRequest({
     method: 'get',
     url: '/message/initMessage',   

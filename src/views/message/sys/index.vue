@@ -1,8 +1,14 @@
 <template>
-  <div class="messages">
-    <header class="message-title">
-      <p>系统消息</p>
-    </header>
+  <div class="messages-box">
+    <van-nav-bar class="header-box">
+      <template #left>
+        <van-icon name="arrow-left" size="18" color="#0a1629" @click="() => { router.push('/campus/message'); }"/>
+      </template>
+      <template #title>
+        <p class="title">系统消息</p>
+      </template>
+    </van-nav-bar>
+
     <div class="message-box-wrapper">
       <div class="message-box">
         <div v-for="(item, index) in systemList" :key="index">
@@ -20,6 +26,9 @@
         </div>
       </div>
     </div>
+
+
+
   </div>
 </template>
 
@@ -30,15 +39,18 @@ interface System {
   sender: string
 }
 
-import { ref } from "vue";
-import { initMessage } from '@/apis/message/index';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+import { initMessageApi } from '@/apis/message/index';
 
-const systemList = ref<System[]>([])
+// const systemList = ref<System[]>([{ content: 'msg1', createTime: 'create-time', sender: 'senderXXX'}]);
+const systemList = ref<System[]>([]);
 
 const getData = async () => {
-  const res = await initMessage()
-  console.log(res.data.data.system);
-  systemList.value = res.data.data.system.reverse()
+  const { data: res } = await initMessageApi();
+  console.log(res.data.system);
+  systemList.value = res.data.system.reverse();
 }
 
 getData()
@@ -46,22 +58,26 @@ getData()
 </script>
 
 <style lang="less" scoped>
-.messages {
-  .message-title {
-      border-bottom: 1px solid #ebebeb;
+.messages-box {
+  .header-box {
+    width: 100%;
+    z-index: 100;
+    overflow: hidden;
+    top: 0;
+    position: fixed;
+    height: 50px;
+    background: #f6f6f6;
+    .title {
+      color: #0a1629;
       line-height: 50px;
       text-align: center;
-      margin: 0 14px;
-
-      p {
-          font-size: 600;
-          color: #121212;
-          font-weight: bold;
-      }
+      font-size: 22px;
+    }
   }
 
   .message-box-wrapper {
-      height: 92vh;
+    margin-top: 50px;
+      height: 100%;
       overflow-y: scroll;
       -ms-flex-negative: 0;
       -webkit-overflow-scrolling: touch;

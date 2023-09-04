@@ -33,24 +33,22 @@
 <script>
 import {reactive, ref} from 'vue';
 import router from '@/routers';
-import {useRoute} from 'vue-router'
-import CryptoJS from "crypto-js";
-import {ElMessage} from "element-plus";
+import CryptoJS from 'crypto-js';
+import { useRoute } from 'vue-router'
+import { ElMessage } from "element-plus";
 
 export default {
 
   setup() {
 
-    const route = useRoute()
+    const route = useRoute();
 
+    const active = ref(0);
 
-
-    const active = ref(0)
-
-    const radio = ref(1)
+    const radio = ref(1);
 
     const next = () => {
-      if (active.value++ > 2) active.value = 0
+      if (active.value++ > 2) active.value = 0;
     }
 
     const toverify = () => {
@@ -58,8 +56,8 @@ export default {
         //判断手机号是否存在
         const phone = mydecrypt(sessionStorage.getItem('campus_phone'));
         if(phone==null){
-          ElMessage.error('当前账号未绑定手机号，请选择其他方式验证')
-          return
+          ElMessage.error('当前账号未绑定手机号，请选择其他方式验证');
+          return;
         }
         router.push({
           name: 'verifyPhone',
@@ -71,10 +69,10 @@ export default {
         //判断邮箱是否存在
         const email = mydecrypt(sessionStorage.getItem('campus_email'));
 
-        console.log(email)
+        console.log(email);
         if(email=="null"){
-          ElMessage.error('当前账号未绑定邮箱，请选择其他方式验证')
-          return
+          ElMessage.error('当前账号未绑定邮箱，请选择其他方式验证');
+          return;
         }
         router.push({
           name: 'verifyEmail',

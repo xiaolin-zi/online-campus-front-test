@@ -20,7 +20,7 @@ const router = createRouter({
       children: [
         {
           path: '/campus/dashboard',
-          name: '线上校园-首页',
+          name: '线上校园-总首页',
           component: () => import('@/views/dashboard/index.vue'),
         },
         {
@@ -30,7 +30,7 @@ const router = createRouter({
         },
         {
           path: '/campus/message',
-          name: '线上校园-消息(列表)',
+          name: '线上校园-消息首页',
           component: () => import('@/views/message/index.vue'),
         },
         {

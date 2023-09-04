@@ -32,7 +32,7 @@
     <van-action-sheet :show="showSheet" :title="sheetTitle" @cancel="showSheet = false">
       <div class="sheet-box">
         <div class="sheet-main">
-          <commentItem 
+          <commentItem
             v-for="item in commentList.values"
             v-bind:key="item.uuid" 
             :item="item"
@@ -85,7 +85,7 @@ const router = useRouter();
 onMounted(() => {
   // console.log('on Mounted.');
   getAllContacts();
-  contactIndexTitle.value = `${username.value} Contact Space`;
+  contactIndexTitle.value = `${username.value} 交际圈`;
 });
 
 // onUpdated(() => {
@@ -215,6 +215,7 @@ const toAdd = () => {
   .header-box {
     width: 100%;
     z-index: 100;
+    overflow: hidden;
     top: 0;
     position: fixed;
     height: 50px;
@@ -225,7 +226,7 @@ const toAdd = () => {
       line-height: 50px;
       text-align: center;
       color: #0a1629;
-      font-size: 25px;
+      font-size: 22px;
     }
     .avatar {
       cursor: pointer;
@@ -242,14 +243,11 @@ const toAdd = () => {
     width: 100%;
     height: 100%;
     margin-top: 50px;
+    margin-bottom: 100px;
 
     .loading-box {
       color: #0a1629;
       text-align: center;
-    }
-
-    .van-floating-bubble {
-      --van-floating-bubble-color: #f00;
     }
   }
 
