@@ -15,7 +15,8 @@
           <div class="message-wrapper">
             <p class="message-time">{{ item.createTime }}</p>
             <div class="message">
-               <el-image style="width: 40px; height: 40px; border-radius: 5px" src="https://edu20230513.oss-cn-guangzhou.aliyuncs.com/2023/07/25/338d98830092451bbd00ee2af233289b.png" />
+              <van-image src="https://edu20230513.oss-cn-guangzhou.aliyuncs.com/2023/07/25/338d98830092451bbd00ee2af233289b.png" round class="avatar"/>
+               <!-- <el-image style="width: 40px; height: 40px; border-radius: 5px" src="https://edu20230513.oss-cn-guangzhou.aliyuncs.com/2023/07/25/338d98830092451bbd00ee2af233289b.png" /> -->
                <div class="message-content">
                 <div class="text-message text-message-receiver">
                   <p>{{ item.content }}</p>
@@ -27,19 +28,12 @@
       </div>
     </div>
 
-
-
   </div>
 </template>
 
 <script setup lang="ts">
-interface System {
-  content: string
-  createTime: string
-  sender: string
-}
-
-import { ref } from 'vue';
+import { System } from '@/interfaces/message';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import { initMessageApi } from '@/apis/message/index';
@@ -47,13 +41,17 @@ import { initMessageApi } from '@/apis/message/index';
 // const systemList = ref<System[]>([{ content: 'msg1', createTime: 'create-time', sender: 'senderXXX'}]);
 const systemList = ref<System[]>([]);
 
+onMounted(() => {
+  getData();
+});
+
 const getData = async () => {
   const { data: res } = await initMessageApi();
   console.log(res.data.system);
   systemList.value = res.data.system.reverse();
 }
 
-getData()
+
 
 </script>
 
@@ -101,6 +99,11 @@ getData()
                   align-items: flex-start;
                   margin: 20px 0;
 
+                  .avatar {
+                    width: 40px;
+                    height: 40px;
+                  }
+
                   .message-content {
                       display: flex;
                       align-items: center;
@@ -128,12 +131,12 @@ getData()
                   }
               }
               .text-message-receiver {
-                  background-color: #f6f6f6;
-                  color: #444;
+                  background-color: #73c975;
+                  color: #0a1629;
                   position: relative;
 
                   &::after {
-                      background: #f6f6f6;
+                      background: #73c975;
                       content: "";
                       height: 8px;
                       left: -4px;

@@ -2,7 +2,7 @@
   <div class="message-dashboard-box">
     <van-nav-bar class="header-box">
       <template #left>
-        <van-button size="mini" color="#73c975" @click="clearNotRead"><p style="color: #0a1629;">清除未读</p></van-button>
+        <van-button size="mini" color="#73c975" @click="clearUnRead"><p style="color: #0a1629;">清除未读</p></van-button>
       </template>
       <template #title>
         <p class="title">消息</p>
@@ -38,9 +38,10 @@
 
 <script lang="ts" setup>
 import { List } from '@/interfaces/message';
-import { ref, onMounted } from "vue";
-import { useRouter, useRoute } from 'vue-router';
-import { clickMyMessageApi } from '@/apis/message/index';
+import { showConfirmDialog, showToast } from 'vant';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { clickMyMessageApi, clearUnReadApi } from '@/apis/message/index';
 import friendItem from '@/components/friend-item/index.vue';
 
 const router = useRouter();
@@ -60,8 +61,24 @@ const clickMyMessage = async () => {
 }
 
 // 清除未读
-const clearNotRead = () => {
-  console.log('清除未读');
+const clearUnRead = () => {
+  showConfirmDialog({
+    title: '提示',
+    message: '确认清除所有未读的消息?',
+  }).then(async () => {
+    const { data: res } = await clearUnReadApi();
+    // console.log(res);
+    if (res.code === 0) {
+      showToast('清除成功!');
+    } else {
+      showToast('OOPS! 内部小错误,请稍后重试!');
+    }
+  }).catch(() => {
+      showToast('已取消操作');
+  });
+
+
+  // console.log('清除未读');
 };
 
 const toSys = () => {
@@ -127,56 +144,10 @@ const toAddFriend = () => {
         margin-left: 10px;
         height: 48px;
         font-size: 22px;
-        line-height: 40px;
+        line-height: 48px;
       }
     }
 
-    .chat-list-group {
-      list-style: none;
-      padding: 10px;
-    
-      .chat-list-group-item {
-        margin-bottom: 10px;
-      
-        .chat-list-group-item-title {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-        }
-      
-        .chat-user-list-group {
-          list-style: none;
-        
-          .chat-user-list-group-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-          
-            &--active {
-              background-color: #f0f5ff;
-            }
-          
-            .content-name {
-              display: flex;
-              align-items: center;
-            
-              .time {
-                margin-left: 10px;
-                color: #999;
-              }
-            }
-          
-            .content {
-              margin-top: 5px;
-              font-size: 14px;
-              color: #666;
-            }
-          }
-        }
-      }
-    }
   }
 
 

@@ -41,7 +41,7 @@ export const getUserChatRecords = (friendId: any) => {
 }
 
 // 清除未读
-export const clearUnRead = () => {
+export const clearUnReadApi = () => {
     return messageRequest({
         method: 'get',
         url: '/message/clearUnRead',   

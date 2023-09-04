@@ -17,3 +17,9 @@ export interface ChatList {
   receiver: string
   createTime: string
 }
+
+export interface System {
+  content: string
+  createTime: string
+  sender: string
+}

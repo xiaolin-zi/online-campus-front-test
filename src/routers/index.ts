@@ -39,6 +39,11 @@ const router = createRouter({
           component: () => import('@/views/message/sys/index.vue'),
         },
         {
+          path: '/campus/message/add-friend',
+          name: '线上校园-消息-加好友',
+          component: () => import('@/views/message/add/index.vue'),
+        },
+        {
           path: '/campus/user',
           name: '线上校园-用户',
           component: () => import('@/views/user/index.vue'),
