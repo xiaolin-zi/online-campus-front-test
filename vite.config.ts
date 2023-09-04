@@ -79,49 +79,49 @@ export default defineConfig({
     proxy: {
       // 网关
       '/gateway-api': {
-        target: 'http://117.72.15.203:9000/',
+        target: 'https://117.72.15.203:9000/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/gateway-api/, '')
       },
       // 用户模块
       '/user-api': {
-        target: 'http://117.72.15.203:9000/campusUser/',
+        target: 'https://117.72.15.203:9000/campusUser/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/user-api/, '')
       },
       // 消息模块
       '/message-api': {
-        target: 'http://117.72.15.203:9000/campusMessage/',
+        target: 'http:s//117.72.15.203:9000/campusMessage/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/message-api/, '')
       },
       // 动态模块
       '/contact-api': {
-        target: 'http://117.72.15.203:9000/campusContact/',
+        target: 'https://117.72.15.203:9000/campusContact/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/contact-api/, '')
       },
       // 交易模块
       '/trade-api': {
-        target: 'http://117.72.15.203:9000/campusTrade/',
+        target: 'https://117.72.15.203:9000/campusTrade/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/trade-api/, '')
       },
       // oss模块 (文件上传与下载)
       '/oss-api': {
-        target: 'http://117.72.15.203:9000/campusOss/',
+        target: 'https://117.72.15.203:9000/campusOss/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/oss-api/, '')
       },
       // 兼职模块
       '/parttime-api': {
-        target: 'http://117.72.15.203:9000/campusParttime/',
+        target: 'https://117.72.15.203:9000/campusParttime/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/parttime-api/, '')
       },
       // 招募模块
       '/recruit-api': {
-        target: 'http://117.72.15.203:9000/campusRecruit/',
+        target: 'https://117.72.15.203:9000/campusRecruit/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/recruit-api/, '')
       },
