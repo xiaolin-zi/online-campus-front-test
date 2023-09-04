@@ -21,7 +21,7 @@
 <script>
 import { reactive, ref } from 'vue';
 import router from '@/routers';
-import forgetApi from '@/apis/user/forget.js';
+// import forgetApi from '@/apis/user/forget.js';
 import { ElMessage } from "element-plus";
 import CryptoJS from 'crypto-js';
 

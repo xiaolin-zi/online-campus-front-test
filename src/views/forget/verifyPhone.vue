@@ -124,8 +124,8 @@
 import {reactive, ref} from 'vue';
 import router from '@/routers';
 import CryptoJS from "crypto-js";
-import loginApi from "@/apis/user/login";
-import forgetApi from "@/apis/user/forget";
+// import loginApi from "@/apis/user/login";
+// import forgetApi from "@/apis/user/forget";
 import { ElMessage } from "element-plus";
 
 export default {
