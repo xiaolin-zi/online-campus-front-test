@@ -114,7 +114,7 @@ router.beforeEach((to, from, next) => {
       console.log(`成功切换页面: '${from.path}' ---> '${to.path}'`);
 
       console.log('尝试创建新ws');
-      openWebSocket(`ws://117.72.15.203/campusMessage/websocket/${globalStore.uid}`);
+      openWebSocket(`wss://117.72.15.203/campusMessage/websocket/${globalStore.uid}`);
       next();
     } else {
       closeWebSocket();
